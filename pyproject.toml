@@ -7,6 +7,8 @@ authors = ["Anna Dvoskina <anna.dvoskina@yandex.ru>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 httpx = "^0.19.0"
+wikipedia = "^1.4.0"
+beautifulsoup4 = "^4.10.0"
 
 [tool.poetry.dev-dependencies]
 
