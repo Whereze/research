@@ -19,34 +19,39 @@ def get_html(url):
 def get_waterfalls(html):
     if html:
         soup = BeautifulSoup(html,features="html.parser")
-        all_waterfalls = soup.findAll("li")
-        result = []    
-        for waterfall in all_waterfalls:
-            title =  waterfall.find('a')
-            url = waterfall.find('a')
-            if title:
-                if url:
-                        title = title.text
-                        url = url['href']
-                        result.append({
-                            "title":title,
-                            "url":url,
-                        })
+        all_waterfalls = soup.find(class_="mw-category-generated")
+        result = []
+        if all_waterfalls:
+            all_waterfalls = all_waterfalls.findAll("li")    
+            for waterfall in all_waterfalls:
+                title =  waterfall.find('a')
+                url = waterfall.find('a')
+                if title:
+                    if url:
+                            title = title.text
+                            url = url['href']
+                            result.append({
+                                "title":title,
+                                "url":url,
+                            })
         return result
     return False     
 
 html = get_html("https://ru.wikipedia.org/wiki/Категория:Водопады_по_алфавиту")
 result_first_page = get_waterfalls(html)
 
-def get_second_pade_url(html):
-    if html:
+def get_second_page_url(html_main):
+    if html_main:
         soup = BeautifulSoup(html,features="html.parser")
         all_waterfalls = soup.find("a",string= "Следующая страница")
         all_waterfalls = "https://ru.wikipedia.org"+all_waterfalls['href']
         return all_waterfalls
 
-html_second_page = get_second_pade_url(html)
+html_second_page = get_second_page_url(html)
+html_second_page = get_html(html_second_page)
 result_second_page = get_waterfalls(html_second_page)
+
+
 
 waterfalls_result = result_first_page + result_second_page
 
